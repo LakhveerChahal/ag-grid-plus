@@ -1,6 +1,7 @@
 {
   "name": "ag-grid-plus",
   "version": "0.0.1",
+  "description": "An ag-grid based package providing extra features built on top of ag-grid community edition to unlock some paid enterprise features",
   "peerDependencies": {
     "@angular/common": "^17.0.0",
     "@angular/core": "^17.0.0"

@@ -1,20 +1,23 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
-import { ColDef, SortModelItem, GridApi, GridOptions, RowClassParams, BodyScrollEndEvent, GridReadyEvent, ICellRendererParams, RowNode, ValueGetterParams } from 'ag-grid-community';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { AgGridModule } from 'ag-grid-angular';
+import { ColDef, SortModelItem, GridApi, GridOptions, BodyScrollEndEvent, GridReadyEvent } from 'ag-grid-community';
 import { Subject, Subscription } from 'rxjs';
+import { AGGridPlusHeaderComponent } from './renderers/header-component/ag-grid-plus-header.component';
 
 @Component({
   selector: 'ag-grid-plus',
   standalone: true,
-  imports: [],
+  imports: [AgGridModule],
   template: `
   <ag-grid-angular
     style="width: 100%; height: 100%"
-    [class]="ag-theme-material"
+    [class]="clazz"
     [gridOptions]="gridOptions"
     (gridReady)="onGridReady($event)"
   ></ag-grid-angular>
   `,
-  styles: ``
+  styles: ``,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AgGridPlusComponent {
   /****** INPUT *********/
@@ -24,7 +27,6 @@ export class AgGridPlusComponent {
   @Input('rowBuffer') rowBuffer: number = 10;
   @Input('limit') limit: number = 100;
   @Input('hasReachedEndOfData') hasReachedEndOfData: boolean = false;
-  @Input('rowId') rowId: string = '';
   @Input('class') clazz: string = 'ag-theme-material';
   /*********************/
 
@@ -72,12 +74,6 @@ export class AgGridPlusComponent {
       }
     }
 
-    if(changes['rowId'] && this.rowId) {
-      this.gridOptions = {
-        ...this.gridOptions,
-        getRowId: () => { return this.rowId; }
-      }
-    }
   }
 
   initializeGridOptions(): void {
@@ -90,6 +86,9 @@ export class AgGridPlusComponent {
       columnDefs: this.colDef,
       rowBuffer: this.rowBuffer,
       onBodyScrollEnd: this.onBodyScrollEnd.bind(this),
+      components: {
+        headerComponent: AGGridPlusHeaderComponent
+      }
     }
   }
   
@@ -107,6 +106,7 @@ export class AgGridPlusComponent {
     this.colDef.forEach((colDef: ColDef) => {
       // attach sortChanged Subject to sortable columns for custom sorting
       if(colDef.sortable) {
+        colDef.headerComponent = AGGridPlusHeaderComponent;
         colDef.headerComponentParams = {
           ...colDef.headerComponentParams,
           onSortChanged: this.sortChanged,
@@ -141,7 +141,9 @@ export class AgGridPlusComponent {
   }
 
   clearGridData(): void {
-    this.gridApi?.setRowData([]);
+    this.gridApi?.updateGridOptions({
+      rowData: []
+    });
     this.rowStore = [];
     this.deltaRows = [];
   }
@@ -150,7 +152,7 @@ export class AgGridPlusComponent {
     this.getRowsEmitter.emit(this.rowStore.length);
   }
 
-  onGridReady(params: GridReadyEvent) {
+  onGridReady(params: GridReadyEvent): void {
     this.gridApi = params.api;
     this.onGridReadyEmitter.emit(this.gridApi);
   }
