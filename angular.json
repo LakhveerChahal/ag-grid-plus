@@ -7,7 +7,8 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "less"
+          "style": "less",
+          "standalone": false
         }
       },
       "root": "",
@@ -93,6 +94,39 @@
               "src/styles.less"
             ],
             "scripts": []
+          }
+        }
+      }
+    },
+    "ag-grid-plus": {
+      "projectType": "library",
+      "root": "projects/ag-grid-plus",
+      "sourceRoot": "projects/ag-grid-plus/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ag-grid-plus/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ag-grid-plus/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ag-grid-plus/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/ag-grid-plus/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         }
       }
