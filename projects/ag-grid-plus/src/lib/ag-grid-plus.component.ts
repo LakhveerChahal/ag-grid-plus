@@ -22,7 +22,7 @@ import { AGGridPlusHeaderComponent } from './renderers/header-component/ag-grid-
 export class AgGridPlusComponent {
   /****** INPUT *********/
   @Input('rowHeight') rowHeight: number = 48;
-  @Input('colDef') colDef: ColDef[] = [];
+  @Input('columnDefs') columnDefs: ColDef[] = [];
   @Input('deltaRows') deltaRows: any[] = [];
   @Input('rowBuffer') rowBuffer: number = 10;
   @Input('limit') limit: number = 100;
@@ -59,7 +59,7 @@ export class AgGridPlusComponent {
       }
     }
 
-    if(changes['colDef']) {
+    if(changes['columnDefs']) {
       this.setColumnDefs();
     }
 
@@ -83,7 +83,7 @@ export class AgGridPlusComponent {
         componentParent: this
       },
       rowHeight: this.rowHeight,
-      columnDefs: this.colDef,
+      columnDefs: this.columnDefs,
       rowBuffer: this.rowBuffer,
       onBodyScrollEnd: this.onBodyScrollEnd.bind(this),
       components: {
@@ -103,7 +103,7 @@ export class AgGridPlusComponent {
   }
 
   setColumnDefs(): void {
-    this.colDef.forEach((colDef: ColDef) => {
+    this.columnDefs.forEach((colDef: ColDef) => {
       // attach sortChanged Subject to sortable columns for custom sorting
       if(colDef.sortable) {
         colDef.headerComponent = AGGridPlusHeaderComponent;
@@ -117,7 +117,7 @@ export class AgGridPlusComponent {
 
     this.gridOptions = {
       ...this.gridOptions,
-      columnDefs: this.colDef
+      columnDefs: this.columnDefs
     }
   }
 

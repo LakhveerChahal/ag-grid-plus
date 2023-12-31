@@ -1,7 +1,7 @@
 <div class="container">
   <ag-grid-plus
     [deltaRows]="deltaRowData"
-    [colDef]="colDef"
+    [columnDefs]="columnDefs"
     [class]="'ag-theme-quartz'"
     (getRows)="getRowsAsync($event)"
     (sortChanged)="onSortChanged($event)"

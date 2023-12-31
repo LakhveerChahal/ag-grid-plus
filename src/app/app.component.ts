@@ -14,7 +14,7 @@ import { AgGridPlusComponent } from 'ag-grid-plus';
 })
 export class AppComponent {
   deltaRowData: any[] = [];
-  colDef: ColDef[] = [];
+  columnDefs: ColDef[] = [];
   limit: number = 50;
   gridApi!: GridApi;
 
@@ -26,7 +26,7 @@ export class AppComponent {
   }
 
   initializeColDefs(): void {
-    this.colDef = [
+    this.columnDefs = [
       {
         headerName: "Car brand",
         field: "carBrand",
@@ -61,7 +61,7 @@ export class AppComponent {
 
   getRowsAsync(offset: number): void {
     of(this.getRows(offset))
-      .pipe(delay(3000))
+      .pipe(delay(500))
       .subscribe((res) => {
         this.deltaRowData = res;
       })

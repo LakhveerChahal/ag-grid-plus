@@ -1,27 +1,67 @@
-# AgGridPlusWorkspace
+# AgGridPlus
+An ag-grid based package providing extra features built on top of ag-grid community edition to unlock some paid enterprise features
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.7.
+# Unlocked features
+1. Dynamic row height with lazy loading data from backend
+(More features upcoming)
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Getting started
+### Installation
+```sh
+$ npm install --save ag-grid-plus ag-grid-community ag-grid-angular
+```
 
-## Code scaffolding
+### Add a placeholder to HTML
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```html
+  <ag-grid-plus
+    [deltaRows]="deltaRowData"
+    [columnDefs]="columnDefs"
+    [class]="'ag-theme-quartz'"
+    (getRows)="getRowsAsync($event)"
+    (sortChanged)="onSortChanged($event)"
+    (onGridReady)="onGridReady($event)"
+  >
+  </ag-grid-plus>
+```
 
-## Build
+### Import the grid component and styles in global styles file
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```js
+import { AgGridPlusComponent } from 'ag-grid-plus';
 
-## Running unit tests
+import 'ag-grid-community/styles//ag-grid.css';
+import 'ag-grid-community/styles//ag-theme-quartz.css';
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Input parameters of AGGridPlusComponent
 
-## Running end-to-end tests
+| Input parameter     | Info                |
+| ------------------- | ----------------    |
+|  colDef             | https://www.ag-grid.com/angular-data-grid/column-definitions/   |
+|  rowHeight          | Default row height in pixels. |
+|  deltaRows          | Paginated data to append in the ag-grid  |
+|  rowBuffer          | The number of rows rendered outside the viewable area the grid renders. Having a buffer means the grid will have rows ready to show as the user slowly scrolls vertically. (Default: 10)  |
+|  limit              | Pagination size (Default: 100 ) |
+|  hasReachedEndOfData| Boolean input to inform the component to not request for further data as we have reached the end  |
+|  clazz              | Ag grid theme to be used  |
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
+### Output parameters of AGGridPlusComponent
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+| @Output parameter           | Info |
+| --------------------|------------------|
+|  getRows            | Emits when user scrolls to the bottom and hence grid requests for more data  |
+|  sortChanged        | Emits when user clicks on any sortable header. Returns SortModelItem object  |
+|  onGridReady        | Emits when grid becomes ready. Returns GridApi object  |
+
+
+## Asking Questions
+
+Feel free to ask any questions using Github [Issues] (https://github.com/LakhveerChahal/ag-grid-plus-workspace/issues)
+
+## Github Repository
+
+https://github.com/LakhveerChahal/ag-grid-plus-workspace/issues
